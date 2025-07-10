@@ -3,11 +3,12 @@ export interface Ingredient {
   name: string;
   emoji: string;
   category: string;
+  image?: string;
 }
 
 export const ingredients: Ingredient[] = [
   // Proteins
-  { id: "chicken", name: "Chicken", emoji: "🐔", category: "protein" },
+  { id: "chicken", name: "Chicken", emoji: "🐔", category: "protein", image: "/src/assets/ingredients/chicken.jpg" },
   { id: "beef", name: "Beef", emoji: "🥩", category: "protein" },
   { id: "fish", name: "Fish", emoji: "🐟", category: "protein" },
   { id: "eggs", name: "Eggs", emoji: "🥚", category: "protein" },
@@ -15,9 +16,9 @@ export const ingredients: Ingredient[] = [
   { id: "beans", name: "Beans", emoji: "🫘", category: "protein" },
   
   // Vegetables
-  { id: "tomato", name: "Tomato", emoji: "🍅", category: "vegetable" },
-  { id: "onion", name: "Onion", emoji: "🧅", category: "vegetable" },
-  { id: "bell-pepper", name: "Bell Pepper", emoji: "🫑", category: "vegetable" },
+  { id: "tomato", name: "Tomato", emoji: "🍅", category: "vegetable", image: "/src/assets/ingredients/tomato.jpg" },
+  { id: "onion", name: "Onion", emoji: "🧅", category: "vegetable", image: "/src/assets/ingredients/onion.jpg" },
+  { id: "bell-pepper", name: "Bell Pepper", emoji: "🫑", category: "vegetable", image: "/src/assets/ingredients/bell-pepper.jpg" },
   { id: "mushroom", name: "Mushroom", emoji: "🍄", category: "vegetable" },
   { id: "carrot", name: "Carrot", emoji: "🥕", category: "vegetable" },
   { id: "broccoli", name: "Broccoli", emoji: "🥦", category: "vegetable" },

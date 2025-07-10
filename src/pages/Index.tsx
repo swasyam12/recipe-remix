@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { IngredientCard } from "@/components/IngredientCard";
 import { RecipeDisplay } from "@/components/RecipeDisplay";
+import { FavoritesList } from "@/components/FavoritesList";
 import { ingredients } from "@/data/ingredients";
 import { generateRecipe, Recipe } from "@/utils/recipeGenerator";
-import { ChefHat, Sparkles, RefreshCw } from "lucide-react";
+import { useFavorites } from "@/hooks/useFavorites";
+import { ChefHat, Sparkles, RefreshCw, Heart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import heroImage from "@/assets/hero-ingredients.jpg";
 
@@ -14,6 +17,7 @@ const Index = () => {
   const [currentRecipe, setCurrentRecipe] = useState<Recipe | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const { toast } = useToast();
+  const { favorites, saveFavorite, removeFavorite, isFavorite } = useFavorites();
 
   const toggleIngredient = (ingredientName: string) => {
     setSelectedIngredients(prev => 
@@ -61,6 +65,27 @@ const Index = () => {
     setCurrentRecipe(null);
   };
 
+  const handleSaveFavorite = () => {
+    if (currentRecipe) {
+      if (isFavorite(currentRecipe.title)) {
+        const favoriteToRemove = favorites.find(fav => fav.title === currentRecipe.title);
+        if (favoriteToRemove?.id) {
+          removeFavorite(favoriteToRemove.id);
+          toast({
+            title: "Removed from favorites",
+            description: "Recipe removed from your favorites!",
+          });
+        }
+      } else {
+        saveFavorite(currentRecipe);
+        toast({
+          title: "Added to favorites! ❤️",
+          description: "Recipe saved to your favorites!",
+        });
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -84,7 +109,17 @@ const Index = () => {
       </div>
 
       <div className="container mx-auto px-4 py-8">
-        <div className="grid lg:grid-cols-2 gap-8">
+        <Tabs defaultValue="create" className="w-full">
+          <TabsList className="grid w-full grid-cols-2 mb-8">
+            <TabsTrigger value="create">Create Recipe</TabsTrigger>
+            <TabsTrigger value="favorites" className="flex items-center gap-2">
+              <Heart size={16} />
+              Favorites ({favorites.length})
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="create">
+            <div className="grid lg:grid-cols-2 gap-8">
           {/* Ingredient Selection */}
           <div className="space-y-6">
             <Card>
@@ -111,6 +146,7 @@ const Index = () => {
                       key={ingredient.id}
                       name={ingredient.name}
                       emoji={ingredient.emoji}
+                      image={ingredient.image}
                       selected={selectedIngredients.includes(ingredient.name)}
                       onToggle={() => toggleIngredient(ingredient.name)}
                     />
@@ -142,27 +178,38 @@ const Index = () => {
             </Button>
           </div>
 
-          {/* Recipe Display */}
-          <div>
-            {currentRecipe ? (
-              <RecipeDisplay
-                title={currentRecipe.title}
-                ingredients={currentRecipe.ingredients}
-                steps={currentRecipe.steps}
-                cookTime={currentRecipe.cookTime}
-                servings={currentRecipe.servings}
-              />
-            ) : (
-              <Card className="h-full flex items-center justify-center min-h-[400px]">
-                <CardContent className="text-center text-muted-foreground">
-                  <ChefHat size={64} className="mx-auto mb-4 opacity-50" />
-                  <h3 className="text-lg font-medium mb-2">Ready to Cook?</h3>
-                  <p>Select some ingredients and generate your unique recipe remix!</p>
-                </CardContent>
-              </Card>
-            )}
-          </div>
-        </div>
+              {/* Recipe Display */}
+              <div>
+                {currentRecipe ? (
+                  <RecipeDisplay
+                    title={currentRecipe.title}
+                    ingredients={currentRecipe.ingredients}
+                    steps={currentRecipe.steps}
+                    cookTime={currentRecipe.cookTime}
+                    servings={currentRecipe.servings}
+                    onSaveFavorite={handleSaveFavorite}
+                    isFavorite={isFavorite(currentRecipe.title)}
+                  />
+                ) : (
+                  <Card className="h-full flex items-center justify-center min-h-[400px]">
+                    <CardContent className="text-center text-muted-foreground">
+                      <ChefHat size={64} className="mx-auto mb-4 opacity-50" />
+                      <h3 className="text-lg font-medium mb-2">Ready to Cook?</h3>
+                      <p>Select some ingredients and generate your unique recipe remix!</p>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="favorites">
+            <FavoritesList
+              favorites={favorites}
+              onRemoveFavorite={removeFavorite}
+            />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Users, ChefHat } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Clock, Users, ChefHat, Heart } from "lucide-react";
 
 interface RecipeDisplayProps {
   title: string;
@@ -8,17 +9,31 @@ interface RecipeDisplayProps {
   steps: string[];
   cookTime: string;
   servings: number;
+  onSaveFavorite?: () => void;
+  isFavorite?: boolean;
 }
 
-export const RecipeDisplay = ({ title, ingredients, steps, cookTime, servings }: RecipeDisplayProps) => {
+export const RecipeDisplay = ({ title, ingredients, steps, cookTime, servings, onSaveFavorite, isFavorite }: RecipeDisplayProps) => {
   return (
     <Card className="w-full shadow-recipe bg-recipe-background">
       <CardHeader>
-        <div className="flex items-center gap-2 mb-2">
-          <ChefHat className="text-primary" size={24} />
-          <CardTitle className="text-2xl bg-gradient-warm bg-clip-text text-transparent">
-            {title}
-          </CardTitle>
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <ChefHat className="text-primary" size={24} />
+            <CardTitle className="text-2xl bg-gradient-warm bg-clip-text text-transparent">
+              {title}
+            </CardTitle>
+          </div>
+          {onSaveFavorite && (
+            <Button
+              variant={isFavorite ? "default" : "outline"}
+              size="sm"
+              onClick={onSaveFavorite}
+              className="ml-2"
+            >
+              <Heart size={16} className={isFavorite ? "fill-current" : ""} />
+            </Button>
+          )}
         </div>
         <div className="flex gap-4 text-sm text-muted-foreground">
           <div className="flex items-center gap-1">
