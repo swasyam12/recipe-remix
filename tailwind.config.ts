@@ -61,7 +61,31 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				ingredient: {
+					selected: 'hsl(var(--ingredient-selected))',
+					hover: 'hsl(var(--ingredient-hover))'
+				},
+				recipe: {
+					background: 'hsl(var(--recipe-background))'
+				},
+				cooking: {
+					warm: 'hsl(var(--cooking-warm))'
 				}
+			},
+			backgroundImage: {
+				'gradient-warm': 'var(--gradient-warm)',
+				'gradient-fresh': 'var(--gradient-fresh)',
+				'gradient-hero': 'var(--gradient-hero)'
+			},
+			boxShadow: {
+				'ingredient': 'var(--shadow-ingredient)',
+				'recipe': 'var(--shadow-recipe)',
+				'glow': 'var(--shadow-glow)'
+			},
+			transitionTimingFunction: {
+				'bounce': 'var(--transition-bounce)',
+				'smooth': 'var(--transition-smooth)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
