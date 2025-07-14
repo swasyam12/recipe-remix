@@ -20,7 +20,7 @@ export const RecipeDisplay = ({ title, ingredients, steps, cookTime, servings, o
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <ChefHat className="text-primary" size={24} />
-            <CardTitle className="text-2xl bg-gradient-warm bg-clip-text text-transparent">
+            <CardTitle className="text-2xl text-black">
               {title}
             </CardTitle>
           </div>
